@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoReward MVP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans p-4 md:p-10">
+    
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-extrabold text-green-700">EcoReward Prototype</h1>
+        <p class="text-gray-500">Frontend-Only Hackathon Demo</p>
+    </div>
+
+    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- LEFT: USER DASHBOARD -->
+        <div class="bg-white p-6 rounded-xl shadow-lg border-t-8 border-green-500">
+            <div class="flex justify-between items-start mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold mb-1 text-gray-800">User Dashboard</h2>
+                    <p class="text-sm text-gray-400">Location: Akoka Zone B</p>
+                </div>
+                <button onclick="resetDemo()" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded hover:bg-red-200">Reset Demo</button>
+            </div>
+            
+            <!-- Point Balance Card -->
+            <div class="bg-green-50 p-6 rounded-lg mb-6 text-center border border-green-100">
+                <p class="text-sm text-green-700 font-bold uppercase tracking-wider mb-2">Available Points</p>
+                <p class="text-6xl font-extrabold text-green-600 mb-4"><span id="points-display">0</span> <span class="text-2xl text-green-500 font-medium">pts</span></p>
+                <form id="redeem-form">
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold px-4 py-3 rounded-lg shadow-md hover:bg-green-700 transition">
+                        Redeem for ₦500 Airtime (Costs 500 pts)
+                    </button>
+                </form>
+            </div>
+
+            <!-- Timetable -->
+            <h3 class="font-bold text-lg border-b pb-2 mb-4">Upcoming Schedule</h3>
+            <ul class="space-y-3">
+                <li class="flex justify-between items-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                    <span class="font-semibold">♻️ Plastics & Cans</span> 
+                    <span class="text-sm bg-green-100 text-green-800 py-1 px-2 rounded">Saturday, 8:00 AM</span>
+                </li>
+                <li class="flex justify-between items-center p-3 bg-gray-50 rounded-lg border border-gray-100">
+                    <span class="font-semibold">🗑️ General Waste</span> 
+                    <span class="text-sm bg-gray-200 text-gray-800 py-1 px-2 rounded">Mon & Thu, 7:00 AM</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- RIGHT: COLLECTOR PORTAL -->
+        <div class="bg-white p-6 rounded-xl shadow-lg border-t-8 border-blue-500">
+            <h2 class="text-2xl font-bold mb-1 text-gray-800">Collector Portal</h2>
+            <p class="text-sm text-gray-400 mb-6">Log new waste collection</p>
+
+            <!-- Input Form -->
+            <form id="collector-form" class="space-y-5 bg-blue-50 p-6 rounded-lg border border-blue-100">
+                <div>
+                    <label class="block text-sm font-bold text-blue-900 mb-2">Select Material</label>
+                    <select id="material" class="w-full border-gray-300 p-3 rounded-lg shadow-sm focus:ring-blue-500">
+                        <option value="Plastic">Plastic (50 pts / kg)</option>
+                        <option value="Carton">Carton (20 pts / kg)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-blue-900 mb-2">Weight (kg)</label>
+                    <input type="number" id="weight" step="0.1" required class="w-full border-gray-300 p-3 rounded-lg shadow-sm focus:ring-blue-500" placeholder="e.g. 4.5">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-lg shadow-md hover:bg-blue-700 transition">
+                    Scan Bag & Award Points
+                </button>
+            </form>
+
+            <!-- Activity Log -->
+            <h3 class="font-bold text-lg border-b pb-2 mt-8 mb-4">Live Transaction Log</h3>
+            <div class="max-h-40 overflow-y-auto">
+                <ul id="transaction-log" class="space-y-2 text-sm">
+                    <!-- JavaScript will inject transactions here -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- The "Backend" Logic written in JavaScript -->
+    <script>
+        // 1. Setup the Local Storage "Database"
+        let db = JSON.parse(localStorage.getItem('ecoRewardDB')) || {
+            points: 0,
+            transactions: []
+        };
+
+        // 2. Function to update the screen
+        function updateUI() {
+            // Update points text
+            document.getElementById('points-display').innerText = db.points;
+            
+            // Build the transaction log HTML
+            const logContainer = document.getElementById('transaction-log');
+            if (db.transactions.length === 0) {
+                logContainer.innerHTML = '<li class="text-gray-400 italic">No transactions yet.</li>';
+            } else {
+                logContainer.innerHTML = db.transactions.map(tx => `
+                    <li class="p-3 bg-gray-50 rounded-lg border-l-4 ${tx.points > 0 ? 'border-blue-400' : 'border-red-400'}">
+                        <span class="font-bold text-gray-700">${tx.action}</span> 
+                        <span class="float-right font-bold ${tx.points > 0 ? 'text-green-600' : 'text-red-600'}">
+                            ${tx.points > 0 ? '+' : ''}${tx.points} pts
+                        </span>
+                    </li>
+                `).join('');
+            }
+
+            // Save the current state back to the browser's memory
+            localStorage.setItem('ecoRewardDB', JSON.stringify(db));
+        }
+
+        // 3. Handle the Collector Form Submission
+        document.getElementById('collector-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Stop the page from refreshing
+            
+            const material = document.getElementById('material').value;
+            const weight = parseFloat(document.getElementById('weight').value);
+            
+            const multiplier = material === 'Plastic' ? 50 : 20;
+            const pointsEarned = Math.floor(weight * multiplier);
+            
+            db.points += pointsEarned;
+            db.transactions.unshift({
+                action: `Logged ${weight}kg of ${material}`,
+                points: pointsEarned
+            });
+            
+            updateUI();
+            this.reset(); // Clear the form inputs
+        });
+
+        // 4. Handle the Redeem Button
+        document.getElementById('redeem-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            if (db.points >= 500) {
+                db.points -= 500;
+                db.transactions.unshift({
+                    action: "Redeemed ₦500 Airtime",
+                    points: -500
+                });
+                updateUI();
+                alert("Success! ₦500 Airtime sent to the user's phone.");
+            } else {
+                alert("Not enough points! You need at least 500 points to redeem.");
+            }
+        });
+
+        // 5. Helper function to clear data for the next pitch
+        function resetDemo() {
+            if(confirm("Are you sure you want to reset the points to zero?")) {
+                db = { points: 0, transactions: [] };
+                updateUI();
+            }
+        }
+
+        // Run the UI update when the page first loads
+        updateUI();
+    </script>
+</body>
+</html>
