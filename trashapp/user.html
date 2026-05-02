@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoReward | Citizen App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* The All-Green Ecosystem */
+        body { font-family: 'Inter', sans-serif; background-color: #00110b; }
+        .eco-panel { background-color: #002216; }
+        .eco-card { background-color: #001A11; }
+        .fintech-gradient { background: linear-gradient(135deg, #004d34 0%, #001A11 100%); }
+        .glass-panel { background: rgba(74, 222, 128, 0.05); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-green-50">
+    
+    <header class="eco-panel p-4 px-6 md:px-10 shadow-lg flex justify-between items-center z-10 sticky top-0 border-b border-[#004d34]/50">
+        <div class="flex items-center gap-3">
+            <div class="bg-green-500 text-[#00110b] font-black text-xl rounded-md w-8 h-8 flex items-center justify-center tracking-tighter shadow-[0_0_10px_rgba(74,222,128,0.3)]">E</div>
+            <h1 class="text-xl font-bold tracking-tight text-green-50">Eco9ja</h1>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="hidden md:flex items-center gap-2 eco-card border border-[#004d34] px-3 py-1.5 rounded-full text-xs font-bold text-green-400">
+                <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse shadow-[0_0_8px_#4ade80]"></span>
+                Akoka Zone B
+            </div>
+            <div class="w-10 h-10 eco-card rounded-full border-2 border-green-500 overflow-hidden shadow-[0_0_10px_rgba(74,222,128,0.2)] hover:border-green-300 transition cursor-pointer">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Blessing" alt="Profile" />
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow p-4 md:p-8 max-w-7xl mx-auto w-full">
+        
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h2 class="text-2xl font-bold text-green-50">Hello, Oluwatunmise 👋</h2>
+                <p class="text-sm text-green-400/80 font-medium mt-1">Let's save the planet today.</p>
+            </div>
+            <button onclick="resetDemo()" class="text-xs bg-red-900/20 text-red-400 px-3 py-2 rounded-lg border border-red-900/50 font-bold hover:bg-red-900/40 transition shadow-sm">Reset Account</button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            
+            <div class="lg:col-span-7 flex flex-col gap-6">
+                
+                <div class="fintech-gradient rounded-3xl shadow-2xl p-6 md:p-8 relative overflow-hidden border border-[#004d34]">
+                    <svg class="absolute -right-10 -bottom-10 w-64 h-64 text-green-500 opacity-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 1 1.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                    
+                    <div class="flex justify-between items-start mb-6 relative z-10">
+                        <div>
+                            <p class="text-xs text-green-300 font-bold uppercase tracking-wider mb-1 flex items-center gap-2">
+                                Available Balance
+                                <button onclick="toggleBalance()" class="text-green-400 hover:text-green-200 transition focus:outline-none">
+                                    <svg id="eye-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                                </button>
+                            </p>
+                            <div class="flex items-end gap-2">
+                                <p class="text-4xl md:text-5xl font-black tracking-tight text-green-50" id="points-display">0</p>
+                                <p class="text-lg font-bold text-green-500 mb-1" id="points-label">pts</p>
+                            </div>
+                        </div>
+                        <div class="glass-panel px-3 py-1.5 rounded-lg border border-[#004d34] text-xs font-bold text-green-300 flex items-center gap-1">
+                            🏆 Top 10%
+                        </div>
+                    </div>
+
+                    <div class="mb-8 relative z-10 glass-panel p-4 rounded-xl border border-[#004d34]/50">
+                        <div class="flex justify-between text-xs text-green-200 font-bold mb-2">
+                            <span>Goal: ₦500 Airtime</span>
+                            <span id="progress-text" class="text-green-400">0 / 500</span>
+                        </div>
+                        <div class="w-full bg-[#00110b] rounded-full h-2">
+                            <div id="progress-bar" class="bg-green-500 h-2 rounded-full transition-all duration-700 ease-out shadow-[0_0_10px_rgba(74,222,128,0.8)]" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <form id="redeem-form" class="relative z-10 grid grid-cols-2 gap-3">
+                        <button type="submit" id="redeem-btn" class="bg-green-500 text-[#00110b] font-black py-3 rounded-xl shadow-lg hover:bg-green-400 transition disabled:opacity-30 disabled:bg-[#004d34] disabled:text-green-800 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-2 border-b-2 border-green-700">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Redeem Now
+                        </button>
+                        <button type="button" class="glass-panel border border-[#004d34] text-green-300 font-bold py-3 rounded-xl hover:bg-[#004d34]/30 transition text-sm flex items-center justify-center gap-2">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                            History
+                        </button>
+                    </form>
+                </div>
+
+                <div class="eco-panel p-6 rounded-3xl shadow-xl border border-[#004d34]/50">
+                    <div class="flex justify-between items-center mb-5">
+                        <h3 class="font-bold text-green-100 text-lg">Upcoming Pickups</h3>
+                        <button class="text-sm font-bold text-green-500 hover:underline">View Calendar</button>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="eco-card border border-green-500/30 p-4 rounded-xl flex justify-between items-center shadow-sm">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-[#003320] p-2 rounded-lg text-xl">♻️</div>
+                                <div>
+                                    <p class="font-bold text-green-100">Plastics & Glass</p>
+                                    <p class="text-xs text-green-500/80 font-medium">Collector: Truck #04</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="bg-green-500/20 text-green-400 border border-green-500/30 text-xs font-bold px-2 py-1 rounded shadow-sm">Arriving Today</span>
+                                <p class="text-xs text-green-300 font-bold mt-1">Est. 8:00 AM</p>
+                            </div>
+                        </div>
+
+                        <div class="eco-card border border-[#003320] p-4 rounded-xl flex justify-between items-center">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-[#00110b] p-2 rounded-lg text-xl opacity-70">🗑️</div>
+                                <div>
+                                    <p class="font-bold text-green-200">General Waste</p>
+                                    <p class="text-xs text-green-600 font-medium">Standard Route</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-green-600 text-sm font-bold">Mon, 7:00 AM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                
+                <div class="eco-panel p-6 rounded-3xl shadow-xl flex-grow border border-[#004d34]/50">
+                    <h3 class="font-bold text-green-100 text-lg mb-1">Your Eco Footprint</h3>
+                    <p class="text-sm text-green-500/70 font-medium mb-6">Real-time impact based on logged waste.</p>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="eco-card p-5 rounded-2xl border border-[#003320] flex flex-col justify-between hover:border-green-500/50 transition">
+                            <div class="bg-[#00110b] w-8 h-8 rounded-full flex items-center justify-center shadow-sm mb-3 text-lg border border-[#004d34]">📦</div>
+                            <p class="text-xs font-bold text-green-600 uppercase tracking-wide">Diverted Waste</p>
+                            <p class="text-2xl font-black text-green-100 mt-1"><span id="total-weight">0</span> <span class="text-sm font-bold text-green-600">kg</span></p>
+                        </div>
+                        
+                        <div class="eco-card p-5 rounded-2xl border border-[#003320] flex flex-col justify-between hover:border-green-500/50 transition">
+                            <div class="bg-[#00110b] w-8 h-8 rounded-full flex items-center justify-center shadow-sm mb-3 text-lg border border-[#004d34]">🌱</div>
+                            <p class="text-xs font-bold text-green-500 uppercase tracking-wide">CO₂ Prevented</p>
+                            <p class="text-2xl font-black text-green-100 mt-1"><span id="co2-saved">0</span> <span class="text-sm font-bold text-green-600">kg</span></p>
+                        </div>
+
+                        <div class="eco-card p-5 rounded-2xl border border-[#003320] flex flex-col justify-between hover:border-green-500/50 transition">
+                            <div class="bg-[#00110b] w-8 h-8 rounded-full flex items-center justify-center shadow-sm mb-3 text-lg border border-[#004d34]">⚡</div>
+                            <p class="text-xs font-bold text-green-500 uppercase tracking-wide">Energy Saved</p>
+                            <p class="text-2xl font-black text-green-100 mt-1"><span id="energy-saved">0</span> <span class="text-sm font-bold text-green-600">kWh</span></p>
+                        </div>
+
+                        <div class="eco-card p-5 rounded-2xl border border-[#003320] flex flex-col justify-between hover:border-green-500/50 transition">
+                            <div class="bg-[#00110b] w-8 h-8 rounded-full flex items-center justify-center shadow-sm mb-3 text-lg border border-[#004d34]">🎒</div>
+                            <p class="text-xs font-bold text-green-600 uppercase tracking-wide">Landfill Bags</p>
+                            <p class="text-2xl font-black text-green-100 mt-1"><span id="total-bags">0</span> <span class="text-sm font-bold text-green-600">saved</span></p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 bg-[#00110b] text-green-50 p-4 rounded-2xl flex items-center gap-4 shadow-inner border border-green-500/20">
+                        <div class="text-3xl">🔥</div>
+                        <div>
+                            <p class="font-bold text-sm text-green-100">You are on a 3-week streak!</p>
+                            <p class="text-xs text-green-500 mt-0.5">Recycle again this Saturday to level up.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let db = JSON.parse(localStorage.getItem('ecoRewardDB_v3')) || { points: 0, totalWeight: 0, totalBags: 0, transactions: [] };
+        let showBalance = true;
+
+        function toggleBalance() {
+            showBalance = !showBalance;
+            const display = document.getElementById('points-display');
+            const label = document.getElementById('points-label');
+            const icon = document.getElementById('eye-icon');
+            
+            if(showBalance) {
+                display.innerText = db.points.toLocaleString();
+                label.style.display = 'block';
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>`;
+            } else {
+                display.innerText = '****';
+                label.style.display = 'none';
+                icon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>`;
+            }
+        }
+
+        function updateUI() {
+            if(showBalance) { document.getElementById('points-display').innerText = db.points.toLocaleString(); }
+            document.getElementById('total-weight').innerText = db.totalWeight.toFixed(1);
+            document.getElementById('total-bags').innerText = db.totalBags;
+            document.getElementById('co2-saved').innerText = (db.totalWeight * 1.5).toFixed(1);
+            document.getElementById('energy-saved').innerText = (db.totalWeight * 4.2).toFixed(1);
+            
+            const rewardThreshold = 500;
+            const progressPercentage = Math.min((db.points / rewardThreshold) * 100, 100);
+            document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
+            document.getElementById('progress-text').innerText = `${db.points.toLocaleString()} / ${rewardThreshold}`;
+
+            const redeemBtn = document.getElementById('redeem-btn');
+            if (db.points >= rewardThreshold) {
+                redeemBtn.disabled = false;
+                redeemBtn.classList.add('animate-pulse');
+            } else {
+                redeemBtn.disabled = true;
+                redeemBtn.classList.remove('animate-pulse');
+            }
+            localStorage.setItem('ecoRewardDB_v3', JSON.stringify(db));
+        }
+
+        document.getElementById('redeem-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (db.points >= 500) {
+                db.points -= 500;
+                const timeString = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                db.transactions.unshift({ action: "Airtime Top-Up ₦500", points: -500, time: timeString });
+                updateUI();
+                alert("🎉 SUCCESS! ₦500 Airtime credited.");
+            }
+        });
+
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'ecoRewardDB_v3') {
+                db = JSON.parse(e.newValue);
+                updateUI();
+            }
+        });
+
+        function resetDemo() {
+            if(confirm("Completely reset this account?")) {
+                localStorage.removeItem('ecoRewardDB_v3'); 
+                location.reload();
+            }
+        }
+
+        updateUI();
+    </script>
+</body>
+</html>
